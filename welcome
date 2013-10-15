@@ -1,0 +1,28 @@
+#!/usr/bin/env perl
+#
+# print a nice welcome screen
+#
+use warnings;
+use strict;
+
+#use Term::ANSIScreen qw(cls);
+#cls;
+
+system ("clear");
+
+print "\n";
+
+system ("cat ./lib/magento_complete");
+
+print "\n";
+print "magento command: ";
+
+while (<>) {
+    chomp;
+    last if ($_ eq "quit");
+    print "unknown command '$_'\n";
+    print "magento command: ";
+}
+
+#print "bye\n"
+__END__

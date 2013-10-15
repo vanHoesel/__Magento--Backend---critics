@@ -1,0 +1,621 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Magento::Backend::Resource::CatalogProduct - Moose::Role</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:_mdnsresponder@fifth.apple.com" />
+</head>
+
+<body style="background-color: white">
+
+
+<!-- INDEX BEGIN -->
+<div name="index">
+<p><a name="__index__"></a></p>
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#version">VERSION</a></li>
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+	<li><a href="#attributes">ATTRIBUTES</a></li>
+	<li><a href="#methodes">METHODES</a></li>
+	<ul>
+
+		<li><a href="#_backend__catalogproduct_create">$backend-&gt;catalogProduct_create</a></li>
+		<li><a href="#_backend__catalogproduct_list">$backend-&gt;catalogProduct_list</a></li>
+		<li><a href="#_product__info">$product-&gt;info</a></li>
+		<li><a href="#_backend__catalogproduct_info">$backend-&gt;catalogProduct_info</a></li>
+		<li><a href="#_product__value">$product-&gt;value</a></li>
+		<li><a href="#_backend__catalogproduct_value">$backend-&gt;catalogProduct_value</a></li>
+		<li><a href="#_product__update">$product-&gt;update</a></li>
+		<li><a href="#_backend__catalogproduct_update">$backend-&gt;catalogProduct_update</a></li>
+	</ul>
+
+	<li><a href="#caveats">CAVEATS</a></li>
+	<li><a href="#disclaimer">DISCLAIMER</a></li>
+	<li><a href="#author">AUTHOR</a></li>
+	<li><a href="#copyright">COPYRIGHT</a></li>
+	<li><a href="#see_also">SEE ALSO</a></li>
+</ul>
+
+<hr name="index" />
+</div>
+<!-- INDEX END -->
+
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p>Magento::Backend::Resource::CatalogProduct - Moose::Role</p>
+<p>
+</p>
+<hr />
+<h1><a name="version">VERSION</a></h1>
+<p>0.02 beta</p>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+<p>Initialising</p>
+<pre>
+    use Magento::Backend;
+    use Magento::Backend::Resource::CatalogProduct;
+    
+    my $backend=Magento::Backend-&gt;new(config=&gt;\%config);</pre>
+<p>Retrieving a filtered list of products from the <code>$backend</code></p>
+<pre>
+    @list=$backend-&gt;catalogProduct_list(
+        filter=&gt;{
+            price=&gt;{'lt'=&gt;10.00},
+            weight=&gt;{'gt'=&gt;250.00},
+        },
+    );</pre>
+<p>Retrieving detailed info on a specified product from the <code>$backend</code></p>
+<pre>
+    %info=$backend-&gt;catalogProduct_info(
+        productSKU=&gt;$sku,
+        attributes=&gt;[qw/name price weight/]),
+        storeView=&gt;'en_uk',
+    );</pre>
+<p>Updating the short description of a specified product from the <code>$backend</code></p>
+<pre>
+    $status=$backend-&gt;catalogProduct_update(
+        productSKU=$sku,
+        productData=&gt; {
+            short_description=&gt;&quot;this is an updated product description&quot;,
+        },
+    );</pre>
+<p>Raise the price with 10% for all products heavier than 500grs. (long wait)</p>
+<pre>
+    $filter={
+        weight=&gt;{'gt'=&gt;500},
+    };
+    foreach ($backend-&gt;catalogProduct_list(filter=&gt;$filter)) {
+        $_-&gt;update(productData =&gt; {price =&gt; $_-&gt;value('price') * 1.10});
+    };</pre>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>This is an abstract CatalogProduct class and defines the interface for it.</p>
+<p>
+</p>
+<hr />
+<h1><a name="attributes">ATTRIBUTES</a></h1>
+<p>Although the object itself does not have any 'reasonable' attributes,
+the <code>$product-&gt;info</code> and <code>$backend-&gt;catalogProduct_info</code> methodes
+do return hashes with keys following below. These names are also used in other
+method calls..</p>
+<dl>
+<dt><strong><a name="product_id" class="item">product_id</a></strong></dt>
+
+<dd>
+<p>Product ID</p>
+</dd>
+<dt><strong><a name="sku" class="item">sku</a></strong></dt>
+
+<dd>
+<p>Product SKU</p>
+</dd>
+<dt><strong><a name="set_id" class="item">set_id</a></strong></dt>
+
+<dd>
+<p>Product set_id</p>
+<p>NOTE: the Magento API documentation refers to <em>set</em>
+where as this is clearly a <em>set_id</em></p>
+</dd>
+<dt><strong><a name="type" class="item">type</a></strong></dt>
+
+<dd>
+<p>Product type</p>
+</dd>
+<dt><strong><a name="created_at" class="item">created_at</a></strong></dt>
+
+<dd>
+<p>Date when the product was created</p>
+</dd>
+<dt><strong><a name="updated_at" class="item">updated_at</a></strong></dt>
+
+<dd>
+<p>Date when the product was last updated</p>
+</dd>
+<dt><strong><a name="type_id" class="item">type_id</a></strong></dt>
+
+<dd>
+<p>Type ID</p>
+</dd>
+<dt><strong><a name="name" class="item">name</a></strong></dt>
+
+<dd>
+<p>Product name</p>
+</dd>
+<dt><strong><a name="description" class="item">description</a></strong></dt>
+
+<dd>
+<p>Product description</p>
+</dd>
+<dt><strong><a name="short_description" class="item">short_description</a></strong></dt>
+
+<dd>
+<p>Short description for a product</p>
+</dd>
+<dt><strong><a name="weight" class="item">weight</a></strong></dt>
+
+<dd>
+<p>Product weight</p>
+</dd>
+<dt><strong><a name="status" class="item">status</a></strong></dt>
+
+<dd>
+<p>Status of a product</p>
+</dd>
+<dt><strong><a name="url_key" class="item">url_key</a></strong></dt>
+
+<dd>
+<p>Relative URL path that can be entered in place of a target path</p>
+</dd>
+<dt><strong><a name="url_path" class="item">url_path</a></strong></dt>
+
+<dd>
+<p>URL path</p>
+</dd>
+<dt><strong><a name="visibility" class="item">visibility</a></strong></dt>
+
+<dd>
+<p>Product visibility on the frontend</p>
+</dd>
+<dt><strong><a name="category_ids" class="item">category_ids</a></strong></dt>
+
+<dd>
+<p>Array of category IDs</p>
+</dd>
+<dt><strong><a name="website_ids" class="item">website_ids</a></strong></dt>
+
+<dd>
+<p>Array of website IDs</p>
+</dd>
+<dt><strong><a name="has_options" class="item">has_options</a></strong></dt>
+
+<dd>
+<p>Defines whether the product has options</p>
+</dd>
+<dt><strong><a name="gift_message_available" class="item">gift_message_available</a></strong></dt>
+
+<dd>
+<p>Defines whether the gift message is available for the product</p>
+</dd>
+<dt><strong><a name="price" class="item">price</a></strong></dt>
+
+<dd>
+<p>Product price</p>
+</dd>
+<dt><strong><a name="special_price" class="item">special_price</a></strong></dt>
+
+<dd>
+<p>Product special price</p>
+</dd>
+<dt><strong><a name="special_from_date" class="item">special_from_date</a></strong></dt>
+
+<dd>
+<p>Date starting from which the special price is applied to the product</p>
+</dd>
+<dt><strong><a name="special_to_date" class="item">special_to_date</a></strong></dt>
+
+<dd>
+<p>Date till which the special price is applied to the product</p>
+</dd>
+<dt><strong><a name="tax_class_id" class="item">tax_class_id</a></strong></dt>
+
+<dd>
+<p>Tax class ID</p>
+</dd>
+<dt><strong><a name="tier_price" class="item">tier_price</a></strong></dt>
+
+<dd>
+<p>Array of catalogProductTierPriceEntity</p>
+</dd>
+<dt><strong><a name="meta_title" class="item">meta_title</a></strong></dt>
+
+<dd>
+<p>Meta title</p>
+</dd>
+<dt><strong><a name="meta_keyword" class="item">meta_keyword</a></strong></dt>
+
+<dd>
+<p>Meta keyword</p>
+</dd>
+<dt><strong><a name="meta_description" class="item">meta_description</a></strong></dt>
+
+<dd>
+<p>Meta description</p>
+</dd>
+<dt><strong><a name="custom_design" class="item">custom_design</a></strong></dt>
+
+<dd>
+<p>Custom design</p>
+</dd>
+<dt><strong><a name="custom_layout_update" class="item">custom_layout_update</a></strong></dt>
+
+<dd>
+<p>Custom layout update</p>
+</dd>
+<dt><strong><a name="options_container" class="item">options_container</a></strong></dt>
+
+<dd>
+<p>Options container</p>
+</dd>
+<dt><strong><a name="enable_googlecheckout" class="item">enable_googlecheckout</a></strong></dt>
+
+<dd>
+<p>Defines whether Google Checkout is applied to the product</p>
+</dd>
+</dl>
+<p>NOTE: the attributes <em>categories</em> and <em>websites</em> are removed.
+Magento just returns ID's, which have their own attributes in the info.</p>
+<p>TODO: provide instance methodes that wil return the apropiate objects.</p>
+<p>
+</p>
+<hr />
+<h1><a name="methodes">METHODES</a></h1>
+<p>This module does not provide any methods on itself but describes a common
+interface for Magento::Backend::Connectors. Any instance call on <code>$backend</code>
+will be cought by AUTOLOAD and dispatched to the proper resource-class for a
+connector</p>
+<p>
+</p>
+<h2><a name="_backend__catalogproduct_create___productdata______createdata______">$backend-&gt;catalogProduct_create
+  (
+  productData =&gt; \%createdata
+  ...
+  )</a></h2>
+<p>Allows you to create a new product and
+returns a new <code>Resource::CatalogProduct</code> object.</p>
+<dl>
+<dt><strong><a name="productdata_updates" class="item">productData =&gt; \%_updates</a></strong></dt>
+
+<dd>
+<p>productData takes a hash whose keys are the attribute-names
+and the values are the initial values.</p>
+<pre>
+
+NOTE: the attributes below are mandetory:</pre>
+<dl>
+<dt><strong><a name="productsku_sku" class="item">productSKU =&gt; $sku</a></strong></dt>
+
+<dd>
+<p>Product SKU</p>
+</dd>
+<dt><strong><a name="producttype_type" class="item">productType =&gt; $type</a></strong></dt>
+
+<dd>
+<p>The type of the product, usually 'simple'.</p>
+</dd>
+<dt><strong><a name="setid_set_id" class="item">setID =&gt; $set_id</a></strong></dt>
+
+<dd>
+<p>The set_id of the <code>CatalogProduct::AtrributeSet</code></p>
+</dd>
+<dt><strong><a name="name_product_name" class="item">name =&gt; $product_name</a></strong></dt>
+
+<dd>
+<p>Product Name</p>
+</dd>
+<dt><strong><a name="description_text" class="item">description =&gt; $text</a></strong></dt>
+
+<dd>
+<p>Product description</p>
+</dd>
+<dt><strong><a name="short_description_text" class="item">short_description =&gt; $text</a></strong></dt>
+
+<dd>
+<p>Product short description</p>
+</dd>
+<dt><strong><a name="price_float" class="item">price =&gt; $float</a></strong></dt>
+
+<dd>
+<p>Product price</p>
+</dd>
+<dt><strong><a name="weight_float" class="item">weight =&gt; $float</a></strong></dt>
+
+<dd>
+<p>Product weight</p>
+</dd>
+<dt><strong><a name="visibility_visibility_code" class="item">visibility =&gt; $visibility_code</a></strong></dt>
+
+<dd>
+<p>Product visibility on the frontend</p>
+</dd>
+<dt><strong><a name="status_enabled" class="item">status =&gt; $enabled</a></strong></dt>
+
+<dd>
+<p>Product status</p>
+</dd>
+</dl>
+<p>See the <em>Attributes</em> above for the complete list of default attributes.
+Other attributes that are part of the <code>setID</code> can be initialised here as well,
+unlike what many authors and developers on PHP have to go through.</p>
+</dd>
+<dt><strong><a name="storeview_store_id_code" class="item">storeView =&gt; $store_id | $code</a></strong></dt>
+
+<dd>
+<p>Setting this parameter will only affect the values to the scope specified.
+This can either be ID for the shop or the code as being defined in
+<a href="/Magento/Backend/Resource/Store.html">the Magento::Backend::Resource::Store manpage</a></p>
+</dd>
+</dl>
+<dl>
+<dt><strong><a name="scalar_context_or_list_context" class="item"><em>SCALAR</em> context or <em>LIST</em> context</a></strong></dt>
+
+<dd>
+<p>returns a new <code>Resource::CatalogProduct</code> object on succes.</p>
+</dd>
+</dl>
+<p>
+</p>
+<h2><a name="_backend__catalogproduct_list________">$backend-&gt;catalogProduct_list
+  (
+  ...
+  )</a></h2>
+<p>Allows you to retrieve the list of products using filters.</p>
+<dl>
+<dt><strong><a name="filter_filters" class="item">filter =&gt; \%filters</a></strong></dt>
+
+<dd>
+<p>Allows you to filter out specific products from the result list.
+This can be used to find a specific product or search for values in names.
+See <a href="/Magento/Backend/Manual/Filters.html">about using filters</a> for more details.</p>
+<p>When not applying any filters... you end up with ALL products,
+probbably not what you want</p>
+</dd>
+<dt><strong><a name="storeview_store_id_code2" class="item">storeView =&gt; $store_id | $code</a></strong></dt>
+
+<dd>
+<p>optional</p>
+<p>Setting this parameter will return values for specific web-shop frontends.
+This can either be ID for the shop or the code as being defined in
+<a href="/Magento/Backend/Resource/Store.html">the Magento::Backend::Resource::Store manpage</a></p>
+</dd>
+</dl>
+<dl>
+<dt><strong><a name="list_context" class="item"><em>LIST</em> context</a></strong></dt>
+
+<dd>
+<p>returns an array of the opaque <code>M::B::R::CatalogProduct::Entity</code> class
+or a subclass there of.</p>
+</dd>
+<dt><strong><a name="scalar_context" class="item"><em>SCALAR</em> context</a></strong></dt>
+
+<dd>
+<p>returns an ArrayRef to the formentioned array.</p>
+</dd>
+</dl>
+<p>
+</p>
+<h2><a name="_product__info___attributes______requested_______">$product-&gt;info
+  (
+  attributes =&gt; \@requested,
+  ...
+  )</a></h2>
+<p>Allows you to retrieve information about the product.</p>
+<p>See below for more detailed information about the parameters
+and the returned value(s).</p>
+<p>
+</p>
+<h2><a name="_backend__catalogproduct_info___productsku_____sku__attributes______requested_______">$backend-&gt;catalogProduct_info
+  (
+  productSKU =&gt; $sku,
+  attributes =&gt; \@requested,
+  ...
+  )</a></h2>
+<p>Allows you to retrieve information about the product specified by
+productSKU.</p>
+<dl>
+<dt><strong><a name="productsku_sku2" class="item">productSKU =&gt; $sku</a></strong></dt>
+
+<dd>
+<p>The SKU for the produvt inquiry.
+If you must, you can use <code>productID =&gt; $product_id</code> instead.</p>
+</dd>
+<dt><strong><a name="attributes_requested" class="item">attributes =&gt; \@requested</a></strong></dt>
+
+<dd>
+<p>This is the list of attribute names that are being requested.
+<code>undef</code> will return all attributtes (default and additional).</p>
+<p>NOTE: Unlike the Magento API documentation, this is a required parameter,
+leaving out this parameter, obfiously means you are not interested in any.
+Makes it more or less a required attribute.</p>
+<p>NOTE: If this paramter is not provided, an empty hash will be returned,
+This behaviour might cause warnings in future releases.</p>
+</dd>
+<dt><strong><a name="storeview_store_id_code3" class="item">storeView =&gt; $store_id | $code</a></strong></dt>
+
+<dd>
+<p>Setting this parameter will return values for specific web-shop frontends.
+This can either be ID for the shop or the code as being defined in
+<a href="/Magento/Backend/Resource/Store.html">the Magento::Backend::Resource::Store manpage</a></p>
+</dd>
+</dl>
+<dl>
+<dt><strong><a name="list_context2" class="item"><em>LIST</em> context</a></strong></dt>
+
+<dd>
+<p>returns a hash that holds the information being retrieved.</p>
+</dd>
+<dt><strong><a name="scalar_context2" class="item"><em>SCALAR</em> context</a></strong></dt>
+
+<dd>
+<p>returns a HashRef to the formentioned hash.</p>
+</dd>
+</dl>
+<p>
+</p>
+<h2><a name="_product__value____attribute_name_______">$product-&gt;value
+  (
+  $attribute_name,
+  ...
+  )</a></h2>
+<p>Returns the value for a given attribute-name for the product.</p>
+<p>See below for more detailed information about the parameters
+and the returned value(s).</p>
+<p>
+</p>
+<h2><a name="_backend__catalogproduct_value____attribute_name__productsku_____sku_______">$backend-&gt;catalogProduct_value
+  (
+  $attribute_name,
+  productSKU =&gt; $sku,
+  ...
+  )</a></h2>
+<p>Returns the value for a given attribute-name for a product specified by
+productSKU.</p>
+<dl>
+<dt><strong><a name="_attribute_name" class="item">$attribute_name</a></strong></dt>
+
+<dd>
+<p><strong>Must</strong> be the first argument, as a string.</p>
+<p>The name of the attribute for wich the value is requested.</p>
+</dd>
+<dt><strong><a name="productsku_sku3" class="item">productSKU =&gt; $sku</a></strong></dt>
+
+<dd>
+<p>The SKU for the produvt inquiry.
+If you must, you can use <code>productID =&gt; $product_id</code> instead.</p>
+</dd>
+<dt><strong><a name="storeview_store_id_code4" class="item">storeView =&gt; $store_id | $code</a></strong></dt>
+
+<dd>
+<p>Setting this parameter will return values for specific web-shop frontends.
+This can either be ID for the shop or the code as being defined in
+<a href="/Magento/Backend/Resource/Store.html">the Magento::Backend::Resource::Store manpage</a></p>
+</dd>
+</dl>
+<dl>
+<dt><strong><a name="scalar_context3" class="item"><em>SCALAR</em> context</a></strong></dt>
+
+<dd>
+<p>Returns the value for the reuested attribute.</p>
+<p>If the value is an array, an ArrayRef will be returned.</p>
+</dd>
+</dl>
+<p>
+</p>
+<h2><a name="_product__update___productdata______updates_______">$product-&gt;update
+  (
+  productData =&gt; \%updates,
+  ...
+  )</a></h2>
+<p>Allows you to update the product.</p>
+<p>See below for more detailed information about the parameters
+and the returned value(s).</p>
+<p>
+</p>
+<h2><a name="_backend__catalogproduct_update___productsku_____sku__productdata______updates_______">$backend-&gt;catalogProduct_update
+  (
+  productSKU =&gt; $sku,
+  productData =&gt; \%updates,
+  ...
+  )</a></h2>
+<p>Allows you to update the product specified by
+productSKU.</p>
+<dl>
+<dt><strong><a name="productsku_sku4" class="item">productSKU =&gt; $sku</a></strong></dt>
+
+<dd>
+<p>The SKU for the produvt inquiry.
+If you must, you can use <code>productID =&gt; $product_id</code> instead.</p>
+</dd>
+<dt><strong><a name="productdata_updates2" class="item">productData =&gt; \%_updates</a></strong></dt>
+
+<dd>
+<p>productData takes a hash whose keys are the attribute-names
+and the values are the new to assing values.</p>
+<pre>
+
+NOTE: You should specify only those attributes which you want to be updated.</pre>
+<p>NOTE: If this paramter is not provided, there is nothing to be update.
+In future release this might raise an exception.</p>
+</dd>
+<dt><strong><a name="storeview_store_id_code5" class="item">storeView =&gt; $store_id | $code</a></strong></dt>
+
+<dd>
+<p>Setting this parameter will only affect the values to the scope specified.
+This can either be ID for the shop or the code as being defined in
+<a href="/Magento/Backend/Resource/Store.html">the Magento::Backend::Resource::Store manpage</a></p>
+</dd>
+</dl>
+<dl>
+<dt><strong><a name="scalar_context_or_list_context2" class="item"><em>SCALAR</em> context or <em>LIST</em> context</a></strong></dt>
+
+<dd>
+<p>returns 1 on succes, or 0 on failure.</p>
+</dd>
+</dl>
+<p>
+</p>
+<hr />
+<h1><a name="caveats">CAVEATS</a></h1>
+<p>Different methods in other packages may return lists or array refferences of
+products. However the likelyhood is that due to the nature of the Magento API
+that these results are not interchangable. If one gets back a list from e.g.
+catalogCategory-&gt;assignedProducts, it will have different subclass then from
+cartProduct-&gt;list. The results are from diffents subclasses.</p>
+<p>
+</p>
+<hr />
+<h1><a name="disclaimer">DISCLAIMER</a></h1>
+<p>This software is as is, and does not do any pre-checks or error processing.</p>
+<p><strong>Use at your own risk!</strong></p>
+<p>
+</p>
+<hr />
+<h1><a name="author">AUTHOR</a></h1>
+<p>Theo van Hoesel</p>
+<dl>
+<dt><strong><a name="send_a_newbie_yapc_eu_2013_kiev" class="item">Send-a-Newbie - YAPC::EU::2013 Kiev</a></strong></dt>
+
+<dt><strong><a name="proudly_sponsered_by_the_community" class="item">proudly sponsered by the community</a></strong></dt>
+
+<dt><strong><a name="http_www_send_a_newbie_enlightenedperl_org" class="item"><a href="http://www.send-a-newbie.enlightenedperl.org">http://www.send-a-newbie.enlightenedperl.org</a></a></strong></dt>
+
+</dl>
+<p>
+</p>
+<hr />
+<h1><a name="copyright">COPYRIGHT</a></h1>
+<p>Copyright 2013 Th.J. van Hoesel</p>
+<p>
+</p>
+<hr />
+<h1><a name="see_also">SEE ALSO</a></h1>
+<dl>
+<dt><strong><a name="magento_api_catalog_product" class="item">Magento API - Catalog Product</a></strong></dt>
+
+<dd>
+<p><a href="http://www.magentocommerce.com/api/soap/catalog/catalogProduct/catalogProduct.html">http://www.magentocommerce.com/api/soap/catalog/catalogProduct/catalogProduct.html</a></p>
+</dd>
+</dl>
+
+</body>
+
+</html>

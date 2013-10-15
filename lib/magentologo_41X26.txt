@@ -1,0 +1,26 @@
+                    X                    
+                 XXXXXXX                 
+              XXXXXXXXXXXXX              
+           XXXXXXXXXXXXXXXXXXX           
+        XXXXXXXXXXX   XXXXXXXXXXX        
+     XXXXXXXXXXX         XXXXXXXXXXX     
+  XXXXXXXXXXX               XXXXXXXXXXX  
+XXXXXXXXXX                     XXXXXXXXXX
+||XXXXX          X     X          XXXXX||
+|||||X        XXXX     XXXX        X|||||
+||||||     XXXXXXX     XXXXXXX     ||||||
+||||||     |||XXXX     XXXX|||     ||||||
+||||||     ||||||X     X||||||     ||||||
+||||||     |||||||     |||||||     ||||||
+||||||     |||||||     |||||||     ||||||
+||||||     |||||||     |||||||     ||||||
+||||||     |||||||     |||||||     ||||||
+||||||     |||||||     |||||||     ||||||
+||||||     |||||||     |||||||     ||||||
+  ||||     |||||||     |||||||     ||||  
+     |     |||||||     |||||||     |     
+           |||||||     |||||||           
+           ||||||||   ||||||||           
+              |||||||||||||              
+                 |||||||                 
+                    |                    
