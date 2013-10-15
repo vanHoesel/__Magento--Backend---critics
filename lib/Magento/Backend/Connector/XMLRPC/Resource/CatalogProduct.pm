@@ -124,18 +124,18 @@ sub catalogProduct_info {
     return $response;
 }; # catalogProduct_info
 
-sub value {
+sub get {
     my $self = shift;
     my $attribute = shift;
     my %params = @_;
     $params{productID} = $self->product_id;
     delete $params{productSKU};
     my $result = $self->_backend->
-        catalogProduct_value($attribute, %params);
+        catalogProduct_get($attribute, %params);
     return $result;
 }
 
-sub catalogProduct_value {
+sub catalogProduct_get {
     my $class = shift;
     my $backend = shift; # from Magento::Backend::AUTOLOAD
     my $attribute = shift;

@@ -192,7 +192,7 @@ my $filter = {
 };
 foreach ($backend->catalogProduct_list(filter=>$filter)) {
     $_->update(productData => {
-        price => $_->value('price') * 1.10,
+        price => $_->get('price') * 1.10,
         },
     );
 };

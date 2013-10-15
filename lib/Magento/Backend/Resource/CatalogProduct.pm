@@ -87,7 +87,7 @@ Raise the price with 10% for all products heavier than 500grs. (long wait)
         weight => {'gt' => 500},
     };
     foreach ($backend->catalogProduct_list(filter => $filter)) {
-        $_->update(productData => {price => $_->value('price') * 1.10});
+        $_->update(productData => {price => $_->get('price') * 1.10});
     };
 
 =head1 DESCRIPTION
@@ -431,25 +431,25 @@ returns a HashRef to the formentioned hash.
 
 =back
 
-=head2 $product->value
+=head2 $product->get
   (
   $attribute_name,
   ...
   )
 
-Returns the value for a given attribute-name for the product.
+Gets the value for a given attribute-name for the product.
 
 See below for more detailed information about the parameters
 and the returned value(s).
 
-=head2 $backend->catalogProduct_value
+=head2 $backend->catalogProduct_get
   (
   $attribute_name,
   productSKU => $sku,
   ...
   )
 
-Returns the value for a given attribute-name for a product specified by
+Gets the value for a given attribute-name for a product specified by
 productSKU.
 
 =over

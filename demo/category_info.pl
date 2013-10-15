@@ -25,7 +25,6 @@ my %config = (
 my $backend = Magento::Backend->new(config => \%config);
 
 print <<DEMO;
-
 ####
 #### %category_info_NDEF = \$backend->catalogCategory_info(attributes => undef);
 #### catalogCatagory_info returns a HASH;
@@ -42,7 +41,6 @@ printf "%-30s => %s\n", $_, $category_info_NDEF{$_} || '<undef>'
 
 
 print <<DEMO;
-
 ####
 #### \$category_info_SOME = \$backend->catalogCategory_info(attributes => undef);
 #### catalogCatagory_info returns a HASHREF;
@@ -51,18 +49,11 @@ DEMO
 
 my $category_info_SOME = $backend->catalogCategory_info(
     categoryID => 4336,
-    attributes => [ qw(category_id name display_mode children) ],
+    attributes => [ qw(category_id name parent_id position level is_active children) ],
     storeView => 'winkel_en_uk',
 );
 
 printf "%-30s => %s\n", $_, $category_info_SOME->{$_} || '<undef>' 
     foreach (keys %$category_info_SOME);
-
-
-
-
-
-
-
 
 __END__
